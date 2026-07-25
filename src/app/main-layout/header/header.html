@@ -1,6 +1,7 @@
 <header class="header">
   <div class="header-left d-flex align-items-center">
-    <button type="button" class="btn border-0 p-0 me-3 text-secondary d-flex align-items-center justify-content-center" (click)="commonService.toggleSidebar()" aria-label="Toggle menu">
+    <button type="button" class="btn border-0 p-0 me-3 text-secondary d-flex align-items-center justify-content-center"
+      (click)="commonService.toggleSidebar()" aria-label="Toggle menu">
       <i class="fa-solid fa-bars fs-4"></i>
     </button>
     <!-- <h2 class="m-0">Game Catalog</h2> -->
@@ -10,7 +11,7 @@
       <i class="fa-regular fa-bell"></i>
       <span class="notification-badge"></span>
     </button>
-    <div class="profile-badge" (click)="logOut()" [title]="'Log Out ' + fullName()">
+    <div class="profile-badge" (click)="commonService.logOut()" [title]="'Log Out ' + fullName()">
       <div class="profile-avatar">{{ avatarLetter() }}</div>
       <span class="profile-name">{{ fullName() }}</span>
     </div>

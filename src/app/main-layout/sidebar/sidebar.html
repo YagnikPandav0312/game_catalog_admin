@@ -4,7 +4,7 @@
       <i class="fa-solid fa-graduation-cap logo-icon"></i>
       <span class="logo-text">Game Catalog</span>
     </div>
-    <button type="button" class="btn border-0 p-0 text-white bg-transparent d-lg-none" (click)="common.closeSidebar()" aria-label="Close sidebar">
+    <button type="button" class="btn border-0 p-0 text-white bg-transparent d-lg-none" (click)="commonService.closeSidebar()" aria-label="Close sidebar">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
@@ -14,49 +14,49 @@
     <ul class="nav-menu">
       <li class="nav-item">
         <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-          class="nav-link" (click)="common.closeSidebar()">
+          class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-chart-pie nav-icon"></i>
           <span class="nav-text">Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/providers" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/providers" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-building-user nav-icon"></i>
           <span class="nav-text">Game Providers</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/game-type" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/game-type" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-building-user nav-icon"></i>
           <span class="nav-text">Game Type</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/game-category" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/game-category" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-tags nav-icon"></i>
           <span class="nav-text">Game Category</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/device-type" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/device-type" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-mobile-screen-button nav-icon"></i>
           <span class="nav-text">Device Type</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/games" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/games" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-gamepad nav-icon"></i>
           <span class="nav-text">Games</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/player" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/player" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-users nav-icon"></i>
           <span class="nav-text">Players</span>
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/sport" routerLinkActive="active" class="nav-link" (click)="common.closeSidebar()">
+        <a routerLink="/sport" routerLinkActive="active" class="nav-link" (click)="commonService.closeSidebar()">
           <i class="fa-solid fa-running nav-icon"></i>
           <span class="nav-text">Sports</span>
         </a>
@@ -68,7 +68,7 @@
     <span class="menu-title">Account</span>
     <ul class="nav-menu">
       <li class="nav-item">
-        <button (click)="logOut()" class="nav-link btn-logout">
+        <button (click)="commonService.logOut()" class="nav-link btn-logout">
           <i class="fa-solid fa-right-from-bracket nav-icon"></i>
           <span class="nav-text">Logout</span>
         </button>

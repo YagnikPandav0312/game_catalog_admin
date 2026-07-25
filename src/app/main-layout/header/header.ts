@@ -1,10 +1,5 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Common } from '../../core/services/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Confirm } from '../../shared/component/confirm/confirm';
-import { Auth } from '../../core/services/auth';
 
 
 @Component({
@@ -14,13 +9,9 @@ import { Auth } from '../../core/services/auth';
   styleUrl: './header.scss',
 })
 export class Header implements OnInit {
-  public modelService = inject(NgbModal);
-  private router = inject(Router);
-  private toastr = inject(ToastrService);
-  public commonService = inject(Common);
-  private authService = inject(Auth);
 
   fullName = signal<string>('');
+  public commonService = inject(Common);
   avatarLetter = computed(() => {
     const name = this.fullName();
     return name ? name.charAt(0).toUpperCase() : '';
@@ -38,32 +29,5 @@ export class Header implements OnInit {
     } catch (e) {
       console.error('Failed to parse user details in header', e);
     }
-  }
-
-  logOut() {
-    const modalRef = this.modelService.open(Confirm, {
-      centered: true,
-      backdrop: 'static',
-      size: 'md',
-    });
-    modalRef.componentInstance.title = 'Logout';
-    modalRef.componentInstance.message = 'Are you sure you want to logout ?';
-    modalRef.componentInstance.onClose.subscribe((returnData: any) => {
-      if (returnData) {
-        this.authService.logout(this.commonService.getUserId()).subscribe({
-          next: (res) => {
-            localStorage.clear();
-            this.router.navigate(['/login']);
-            this.commonService.manageStatus(res.status);
-          },
-          error: (err) => {
-            localStorage.clear();
-            this.router.navigate(['/login']);
-            this.toastr.error(err.error?.status?.message || 'Error occurred while Logout');
-          }
-        });
-      }
-      modalRef.close();
-    });
   }
 }

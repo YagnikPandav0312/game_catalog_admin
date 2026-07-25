@@ -4,6 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Status } from '../../model/api.model';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Auth } from './auth';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Confirm } from '../../shared/component/confirm/confirm';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +18,10 @@ export class Common {
   public http: HttpClient;
   private userIdSubject = new BehaviorSubject<number | null>(null);
   userId$ = this.userIdSubject.asObservable();
+  private authService = inject(Auth);
+  private router = inject(Router);
+  public modelService = inject(NgbModal);
+
   public isSidebarOpen = signal<boolean>(
     typeof window !== 'undefined' ? window.innerWidth > 992 : true,
   );
@@ -26,7 +34,7 @@ export class Common {
     if (storedUser) {
       this.userData.set(JSON.parse(storedUser));
     }
-    
+
   }
 
   toggleSidebar(): void {
@@ -68,4 +76,32 @@ export class Common {
   getUserId(): number | null {
     return this.userIdSubject.value || Number(localStorage.getItem('userId'));
   }
+
+  logOut() {
+    const modalRef = this.modelService.open(Confirm, {
+      centered: true,
+      backdrop: 'static',
+      size: 'md',
+    });
+    modalRef.componentInstance.title = 'Logout';
+    modalRef.componentInstance.message = 'Are you sure you want to logout ?';
+    modalRef.componentInstance.onClose.subscribe((returnData: any) => {
+      if (returnData) {
+        this.authService.logout(this.getUserId()).subscribe({
+          next: (res) => {
+            localStorage.clear();
+            this.router.navigate(['/login']);
+            this.manageStatus(res.status);
+          },
+          error: (err) => {
+            localStorage.clear();
+            this.router.navigate(['/login']);
+            this.toastr.error(err.error?.status?.message || 'Error occurred while Logout');
+          }
+        });
+      }
+      modalRef.close();
+    });
+  }
+
 }
