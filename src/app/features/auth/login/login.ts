@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from '../../../core/services/auth';
@@ -22,7 +22,6 @@ export class Login {
   private toastr = inject(ToastrService);
 
   constructor(
-    private fb: FormBuilder,
     private authService: Auth,
     private router: Router,
   ) { }
@@ -32,9 +31,9 @@ export class Login {
       this.router.navigate(['/dashboard']);
       return;
     }
-    this.loginForm = this.fb.group({
-      user_name: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+    this.loginForm = new FormGroup({
+      user_name: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     });
   }
 

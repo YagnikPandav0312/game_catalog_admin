@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { GameTypeService } from '../../../core/services/game-type';
 import { Common } from '../../../core/services/common';
@@ -20,7 +20,6 @@ export class AddEditGametype implements OnInit {
   form!: FormGroup;
   submitted = signal<boolean>(false);
   isEditMode = signal<boolean>(false);
-  private fb = inject(FormBuilder);
   private gameTypeService = inject(GameTypeService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -39,13 +38,12 @@ export class AddEditGametype implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      game_types_name: ['', [Validators.required, Validators.maxLength(100)]],
-      slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
+    this.form = new FormGroup({
+      game_types_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      slug: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]),
     });
     this.submitted.set(false);
 
-    // Auto-generate slug from name if not in edit mode
     this.form.get('game_types_name')?.valueChanges.subscribe((name) => {
       if (!this.isEditMode() && name) {
         const slug = this.slugify(name);

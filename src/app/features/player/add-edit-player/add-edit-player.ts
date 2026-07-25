@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PlayerService } from '../../../core/services/player';
 import { Common } from '../../../core/services/common';
@@ -20,7 +20,6 @@ export class AddEditPlayer implements OnInit {
   form!: FormGroup;
   submitted = signal<boolean>(false);
   isEditMode = signal<boolean>(false);
-  private fb = inject(FormBuilder);
   private playerService = inject(PlayerService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -37,10 +36,10 @@ export class AddEditPlayer implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      full_name: ['', [Validators.required, Validators.maxLength(100)]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
-      password: ['', this.isEditMode() ? [] : [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
+    this.form = new FormGroup({
+      full_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
+      password: new FormControl('', this.isEditMode() ? [] : [Validators.required, Validators.minLength(6), Validators.maxLength(50)]),
     });
     this.submitted.set(false);
   }

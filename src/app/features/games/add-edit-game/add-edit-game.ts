@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { GameService } from '../../../core/services/game';
 import { Common } from '../../../core/services/common';
@@ -33,7 +33,6 @@ export class AddEditGame implements OnInit {
   selectedFile: File | null = null;
   isEditMode = signal<boolean>(false);
 
-  private fb = inject(FormBuilder);
   private gameService = inject(GameService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -79,20 +78,20 @@ export class AddEditGame implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      game_name: ['', [Validators.required, Validators.maxLength(100)]],
-      slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
-      provider_id: ['', [Validators.required]],
-      category_id: ['', [Validators.required]],
-      game_type_id: ['', [Validators.required]],
-      device_type_id: ['', [Validators.required]],
-      release_date: [''],
-      max_win: ['', [Validators.maxLength(100)]],
-      min_bet: ['', [Validators.min(0)]],
-      max_bet: ['', [Validators.min(0)]],
-      rtp: ['', [Validators.min(0), Validators.max(100)]],
-      variance: [''],
-      thumbnail: [null]
+    this.form = new FormGroup({
+      game_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      slug: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]),
+      provider_id: new FormControl('', [Validators.required]),
+      category_id: new FormControl('', [Validators.required]),
+      game_type_id: new FormControl('', [Validators.required]),
+      device_type_id: new FormControl('', [Validators.required]),
+      release_date: new FormControl(''),
+      max_win: new FormControl('', [Validators.maxLength(100)]),
+      min_bet: new FormControl('', [Validators.min(0)]),
+      max_bet: new FormControl('', [Validators.min(0)]),
+      rtp: new FormControl('', [Validators.min(0), Validators.max(100)]),
+      variance: new FormControl(''),
+      thumbnail: new FormControl(null)
     });
     this.submitted.set(false);
     this.selectedFile = null;

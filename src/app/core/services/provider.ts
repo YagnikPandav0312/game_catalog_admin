@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../constants/api-endpoints';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environments/environment';
 import { ProviderList } from '../../model/provider.model';
 import { BaseResponse, getPayloadReq } from '../../model/api.model';
 

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API } from '../constants/api-endpoints';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environments/environment';
 import { SportList } from '../../model/sport.model';
 import { BaseResponse } from '../../model/api.model';
 

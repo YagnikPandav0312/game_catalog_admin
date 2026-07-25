@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SportService } from '../../../core/services/sport';
 import { Common } from '../../../core/services/common';
@@ -24,7 +24,6 @@ export class AddEditSport implements OnInit {
   selectedFile: File | null = null;
   isEditMode = signal<boolean>(false);
 
-  private fb = inject(FormBuilder);
   private sportService = inject(SportService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -56,10 +55,10 @@ export class AddEditSport implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      sport_name: ['', [Validators.required, Validators.maxLength(100)]],
-      slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
-      logo: [null],
+    this.form = new FormGroup({
+      sport_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      slug: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]),
+      logo: new FormControl(null),
     });
     this.submitted.set(false);
     this.selectedFile = null;

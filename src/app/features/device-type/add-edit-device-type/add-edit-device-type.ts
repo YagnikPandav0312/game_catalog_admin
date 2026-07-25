@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DeviceTypeService } from '../../../core/services/device-type';
 import { Common } from '../../../core/services/common';
@@ -20,7 +20,6 @@ export class AddEditDeviceType implements OnInit {
   form!: FormGroup;
   submitted = signal<boolean>(false);
   isEditMode = signal<boolean>(false);
-  private fb = inject(FormBuilder);
   private deviceTypeService = inject(DeviceTypeService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -39,9 +38,9 @@ export class AddEditDeviceType implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      device_type_name: ['', [Validators.required, Validators.maxLength(100)]],
-      slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
+    this.form = new FormGroup({
+      device_type_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      slug: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]),
     });
     this.submitted.set(false);
     this.form.get('device_type_name')?.valueChanges.subscribe((name) => {

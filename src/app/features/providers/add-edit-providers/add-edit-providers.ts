@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProviderService } from '../../../core/services/provider';
 import { Common } from '../../../core/services/common';
@@ -24,7 +24,6 @@ export class AddEditProviders implements OnInit {
   selectedFile: File | null = null;
   isEditMode = signal<boolean>(false);
 
-  private fb = inject(FormBuilder);
   private providerService = inject(ProviderService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -34,10 +33,10 @@ export class AddEditProviders implements OnInit {
     if (this.provider) {
       this.isEditMode.set(true);
       this.form.patchValue({
-        provider_id :this.provider.provider_id,
+        provider_id: this.provider.provider_id,
         provider_name: this.provider.provider_name,
         slug: this.provider.slug || '',
-        user_id: String (this.commonService.getUserId()),
+        user_id: String(this.commonService.getUserId()),
       });
       if (this.provider.logo) {
         if (this.provider.logo.startsWith('http') || this.provider.logo.startsWith('data:')) {
@@ -56,10 +55,10 @@ export class AddEditProviders implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      provider_name: ['', [Validators.required, Validators.maxLength(100)]],
-      slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
-      logo: [null],
+    this.form = new FormGroup({
+      provider_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      slug: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]),
+      logo: new FormControl(null),
     });
     this.submitted.set(false);
     this.selectedFile = null;
@@ -109,7 +108,7 @@ export class AddEditProviders implements OnInit {
     }
 
     const formData = new FormData();
-    if(this.isEditMode()){
+    if (this.isEditMode()) {
       formData.append('provider_id', String(this.provider?.provider_id));
     }
     formData.append('provider_name', this.form.get('provider_name')?.value);

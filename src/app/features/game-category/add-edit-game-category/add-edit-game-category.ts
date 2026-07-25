@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { GameCategoryService } from '../../../core/services/game-category';
 import { Common } from '../../../core/services/common';
@@ -23,7 +23,6 @@ export class AddEditGameCategory implements OnInit {
   submitted = signal<boolean>(false);
   isEditMode = signal<boolean>(false);
   @Input() gameTypes: GameTypeList[] = [];
-  private fb = inject(FormBuilder);
   private gameCategoryService = inject(GameCategoryService);
   private commonService = inject(Common);
   private toastr = inject(ToastrService);
@@ -44,10 +43,10 @@ export class AddEditGameCategory implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      game_categorie_name: ['', [Validators.required, Validators.maxLength(100)]],
-      slug: ['', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]],
-      game_type_id: ['', [Validators.required]],
+    this.form = new FormGroup({
+      game_categorie_name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      slug: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9-]+$/)]),
+      game_type_id: new FormControl('', [Validators.required]),
     });
     this.submitted.set(false);
 

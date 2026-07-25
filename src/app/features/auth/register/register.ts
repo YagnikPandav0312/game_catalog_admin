@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from '../../../core/services/auth';
@@ -21,17 +21,16 @@ export class Register {
   private toastr = inject(ToastrService);
 
   constructor(
-    private fb: FormBuilder,
     private authService: Auth,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.registerForm = this.fb.group({
-      full_name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['user', [Validators.required]],
+    this.registerForm = new FormGroup({
+      full_name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      role: new FormControl('user', [Validators.required]),
     });
   }
 
