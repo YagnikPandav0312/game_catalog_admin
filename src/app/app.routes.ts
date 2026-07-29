@@ -58,6 +58,10 @@ export const routes: Routes = [
       {
         path: 'sport',
         loadComponent: () => import('./features/sport/sport').then((m) => m.Sport)
+      },
+      {
+        path: 'country',
+        loadComponent: () => import('./features/country/country').then((m) => m.Country)
       }
     ],
   },

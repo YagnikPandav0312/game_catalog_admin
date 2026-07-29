@@ -1,0 +1,77 @@
+<div class="form-container">
+  <div class="form-header">
+    <h3>{{ isEditMode() ? 'Edit Country' : 'Add New Country' }}</h3>
+    <button type="button" class="btn-close-panel" (click)="onCancel()" aria-label="Close panel">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-body">
+    <!-- Country Name -->
+    <div class="form-group mb-4">
+      <label for="country_name" class="form-label">Country Name <span class="required">*</span></label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-globe input-icon"></i>
+        <input type="text" id="country_name" formControlName="country_name" class="form-control"
+          placeholder="Enter country name (e.g. United States)..." [class.is-invalid]="submitted() && f['country_name'].errors" />
+      </div>
+      @if (submitted() && f['country_name'].errors) {
+      <div class="error-feedback">
+        @if (f['country_name'].errors['required']) {
+        <span>Country name is required.</span>
+        }
+        @if (f['country_name'].errors['maxlength']) {
+        <span>Country name cannot exceed 100 characters.</span>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Country Code -->
+    <div class="form-group mb-4">
+      <label for="country_code" class="form-label">Country Code <span class="required">*</span></label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-passport input-icon"></i>
+        <input type="text" id="country_code" formControlName="country_code" class="form-control" placeholder="e.g. US, IN, GB"
+          [class.is-invalid]="submitted() && f['country_code'].errors" style="text-transform: uppercase;" />
+      </div>
+      @if (submitted() && f['country_code'].errors) {
+      <div class="error-feedback">
+        @if (f['country_code'].errors['required']) {
+        <span>Country code is required.</span>
+        }
+        @if (f['country_code'].errors['minlength'] || f['country_code'].errors['maxlength'] || f['country_code'].errors['pattern']) {
+        <span>Country code must be 2 to 5 uppercase alphabetical characters.</span>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Flag Emoji / Image Url / Text -->
+    <div class="form-group mb-4">
+      <label for="flag" class="form-label">Flag Emoji / Image URL <span class="required">*</span></label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-flag input-icon"></i>
+        <input type="text" id="flag" formControlName="flag" class="form-control" placeholder="Enter flag emoji (e.g. 🇺🇸) or image URL..."
+          [class.is-invalid]="submitted() && f['flag'].errors" />
+      </div>
+      @if (submitted() && f['flag'].errors) {
+      <div class="error-feedback">
+        @if (f['flag'].errors['required']) {
+        <span>Flag is required.</span>
+        }
+        @if (f['flag'].errors['maxlength']) {
+        <span>Flag value cannot exceed 255 characters.</span>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="form-footer">
+      <button type="button" class="btn btn-secondary-custom" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary-custom">
+        <i class="fa-solid fa-check me-2"></i> {{ isEditMode() ? 'Update' : 'Save' }}
+      </button>
+    </div>
+  </form>
+</div>

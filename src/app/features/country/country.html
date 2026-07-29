@@ -1,0 +1,155 @@
+<div class="feature-page">
+  <!-- Page Header -->
+  <div class="page-header d-flex flex-wrap align-items-center justify-content-between mb-4">
+    <div class="header-title">
+      <h2>Countries</h2>
+      <p class="text-muted">Manage your catalog countries and configurations</p>
+    </div>
+
+    <div class="header-actions d-flex align-items-center gap-3">
+      <!-- Search Input -->
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="search" class="form-control" placeholder="Search countries..." [ngModel]="searchQuery()" (ngModelChange)="onSearchChange($event)" />
+      </div>
+
+      <!-- Add Button -->
+      <button class="btn btn-add-custom" (click)="openFormModal()">
+        <i class="fa-solid fa-plus me-2"></i> Add Country
+      </button>
+    </div>
+  </div>
+
+  <!-- Content Card -->
+  <div class="content-card">
+    <!-- Table View -->
+    @if (countries().length > 0) {
+    <div class="table-responsive">
+      <table class="table custom-table align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="d-none d-sm-table-cell sortable" style="width: 100px;" (click)="sort('country_id')">
+              ID
+              @if (sort_by() === 'country_id') {
+                <i class="fa-solid" [ngClass]="sort_order() === 'ASC' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+              } @else {
+                <i class="fa-solid fa-sort text-muted opacity-50"></i>
+              }
+            </th>
+            <th scope="col" style="width: 120px;">Flag</th>
+            <th scope="col" class="sortable" (click)="sort('country_name')">
+              Country Name
+              @if (sort_by() === 'country_name') {
+                <i class="fa-solid" [ngClass]="sort_order() === 'ASC' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+              } @else {
+                <i class="fa-solid fa-sort text-muted opacity-50"></i>
+              }
+            </th>
+            <th scope="col" class="sortable" style="width: 150px;" (click)="sort('country_code')">
+              Country Code
+              @if (sort_by() === 'country_code') {
+                <i class="fa-solid" [ngClass]="sort_order() === 'ASC' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+              } @else {
+                <i class="fa-solid fa-sort text-muted opacity-50"></i>
+              }
+            </th>
+            <th scope="col" class="sortable" style="width: 180px;" (click)="sort('created_at')">
+              Created At
+              @if (sort_by() === 'created_at') {
+                <i class="fa-solid" [ngClass]="sort_order() === 'ASC' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+              } @else {
+                <i class="fa-solid fa-sort text-muted opacity-50"></i>
+              }
+            </th>
+            <th scope="col" class="sortable" style="width: 120px;" (click)="sort('is_active')">
+              Status
+              @if (sort_by() === 'is_active') {
+                <i class="fa-solid" [ngClass]="sort_order() === 'ASC' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+              } @else {
+                <i class="fa-solid fa-sort text-muted opacity-50"></i>
+              }
+            </th>
+            <th scope="col" class="text-end" style="width: 150px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( country of countries(); track country.country_id ; let i = $index) {
+          <tr>
+            <td class="item-id d-none d-sm-table-cell">{{ showingFrom() + i }}</td>
+            <td>
+              <div class="logo-container">
+                @if (country.flag && (country.flag.startsWith('http') || country.flag.startsWith('data:'))) {
+                  <img [src]="country.flag" [alt]="country.country_name + ' flag'" class="provider-logo" />
+                } @else {
+                  <div class="default-logo-avatar bg-light border text-dark fs-4 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; border-radius: 50%;">
+                    {{ country.flag || country.country_code || '🏳️' }}
+                  </div>
+                }
+              </div>
+            </td>
+            <td>
+              <span class="item-name font-weight-bold">{{ country.country_name }}</span>
+            </td>
+            <td>
+              <span class="badge bg-secondary px-3 py-2 fs-6 text-uppercase">{{ country.country_code }}</span>
+            </td>
+            <td>
+              <span class="text-muted small">{{ country.created_at | date: 'dd-MMM-yyyy hh:mm a' }}</span>
+            </td>
+            <td>
+              <button class="btn btn-link p-0 border-0" (click)="onToggleStatus(country)" [title]="country.is_active ? 'Deactivate Country' : 'Activate Country'">
+                @if (country.is_active) {
+                  <i class="fa-solid fa-toggle-on text-success fs-4"></i>
+                } @else {
+                  <i class="fa-solid fa-toggle-off text-secondary fs-4"></i>
+                }
+              </button>
+            </td>
+            <td class="text-end">
+              <div class="action-buttons d-inline-flex gap-2">
+                <button class="btn btn-action btn-edit" (click)="openFormModal(country)" title="Edit Country">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn btn-action btn-delete" (click)="onDeleteCountry(country)" title="Delete Country">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2 px-3 pb-3">
+      <span class="text-muted small">
+        Showing {{ showingFrom() }} to {{ showingTo() }} of {{ totalItems() }} entries
+      </span>
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [page]="currentPage()"
+        [pageSize]="pageSize()"
+        [maxSize]="5"
+        [boundaryLinks]="true"
+        (pageChange)="onPageChange($event)">
+      </ngb-pagination>
+    </div>
+    } @else {
+    <div class="empty-state-container text-center py-5">
+      <div class="empty-state-icon mb-3">
+        <i class="fa-solid fa-earth-americas text-muted opacity-50 fs-1"></i>
+      </div>
+      <h4>No Countries Found</h4>
+      <p class="text-muted">
+        {{ searchQuery() ? 'No countries match your search query.' : 'Get started by creating your very first country.' }}
+      </p>
+      @if (!searchQuery()) {
+        <button class="btn btn-add-custom btn-sm mt-2" (click)="openFormModal()">
+          <i class="fa-solid fa-plus me-2"></i> Create Country
+        </button>
+      }
+    </div>
+    }
+  </div>
+</div>

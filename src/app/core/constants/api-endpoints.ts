@@ -61,5 +61,13 @@ export const API = {
         update_sport: '/sport/update_sport',
         delete_sport: '/sport/delete_sport',
         update_sport_status: '/sport/update_sport_status',
+    },
+    country_api: {
+        get_country: '/country/get_country',
+        get_country_by_id: '/country/get_country_by_id',
+        create_country: '/country/create_country',
+        update_country: '/country/update_country',
+        delete_country: '/country/delete_country',
+        update_country_status: '/country/update_country_status',
     }
 }
